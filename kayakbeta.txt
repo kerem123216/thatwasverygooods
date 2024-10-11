@@ -10,17 +10,6 @@
 // ==/UserScript==
 
 
-if (unsafeWindow['Ⲇⵠ'] && unsafeWindow['Ⲇⵠ'][i]) {
-  for (let k = 0; k < unsafeWindow['Ⲇⵠ'][i].length; k++) {
-    // Kodunu buraya yaz
-  }
-} else {
-  // unsafeWindow['Ⲇⵠ'][i] tanımsız olduğunda ne yapacağını buraya ekle
-  console.warn("unsafeWindow['Ⲇⵠ'][i] tanımsız, i değeri =", i);
-  // Bu iterasyonu atlayabilir veya başka bir işlem yapabilirsin.
-}
-
-
 
 
 (function() {
