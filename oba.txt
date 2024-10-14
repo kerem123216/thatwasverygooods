@@ -1,3 +1,32 @@
+(function() {
+    'use strict';
+
+    // Videoları her 2 saniyede bir kontrol et ve hızlandır
+    setInterval(function() {
+        let videos = document.querySelectorAll('video');
+        videos.forEach(function(video) {
+            if (video.readyState >= 2) { // Video yüklendiyse
+                video.playbackRate = 10; // Hızı 10 katına çıkar
+                video.play(); // Videoyu oynat
+            }
+        });
+    }, 2000); // Her 2 saniyede bir videoları kontrol et
+})();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 (function() {
     'use strict';
