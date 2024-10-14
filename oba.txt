@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Video Hızlandırıcı (15 Saniye Sonra)
 // @namespace    http://tampermonkey.net/
-// @version      2.1
+// @version      2.2
 // @description  Videoları 10 kat hızlandır ve tespit edilmeyi önle
 // @author       SeninAdın
 // @match        *://*/*
@@ -18,19 +18,23 @@
         // Videoları kontrol et
         let videos = document.querySelectorAll('video');
         videos.forEach(function(video) {
-            if (video.readyState >= 2 && !video.paused) { // Video yüklendiyse ve durmuyorsa
+            if (video.readyState >= 2) { // Video yüklendiyse
                 video.playbackRate = speedIncrease; // Hızı artır
 
                 // Hızlandırmayı gizlemek için görsel ve zamanlama ayarları
                 video.onplay = function() {
                     setInterval(() => {
-                        video.currentTime += 0.1; // Videoyu her 0.1 saniyede bir ilerlet
+                        if (!video.paused) { // Video durmamışsa
+                            video.currentTime += 0.1; // Videoyu her 0.1 saniyede bir ilerlet
+                        }
                     }, 100); // 100 ms aralıklarla ilerlet
                 };
 
-                // Video bitince işaretle
+                // Video bitince işlemler
                 video.onended = function() {
                     console.log("Video tamamlandı."); // Konsolda video tamamlandığını yazdır
+                    video.playbackRate = 1; // Hızı normalleştir
+                    // İstenirse başka bir işlem yapılabilir (örneğin, sonraki videoya geçişi tetikleme)
                 };
 
                 // Videoyu tekrar oynatmayı deneme
@@ -41,11 +45,3 @@
         });
     }, 15000); // 15 saniye bekle
 })();
-
-
-
-
-
-
-
-
