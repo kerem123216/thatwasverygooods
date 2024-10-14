@@ -1,26 +1,9 @@
-// ==UserScript==
-// @name         Video Hızlandırıcı (Tespit Bypass)
-// @namespace    http://tampermonkey.net/
-// @version      1.5
-// @description  Videoları 10 kat hızlandır ve tespit edilmeyi önle
-// @author       SeninAdın
-// @match        *://*/*
-// @grant        none
-// ==/UserScript==
-// ==UserScript==
-// @name         Video Hızlandırıcı (Tespit Bypass)
-// @namespace    http://tampermonkey.net/
-// @version      1.6
-// @description  Videoları 10 kat hızlandır ve tespit edilmeyi önle
-// @author       SeninAdın
-// @match        *://*/*
-// @grant        none
-// ==/UserScript==
+
 
 // ==UserScript==
-// @name         Video Hızlandırıcı (Geliştirilmiş Tespit Bypass)
+// @name         Video Hızlandırıcı (X Tuşu ile)
 // @namespace    http://tampermonkey.net/
-// @version      1.7
+// @version      1.8
 // @description  Videoları 10 kat hızlandır ve tespit edilmeyi önle
 // @author       SeninAdın
 // @match        *://*/*
@@ -32,57 +15,38 @@
 
     const speedIncrease = 10; // Hız 10 katına çıkar
 
-    // Kullanıcı etkileşimi için buton oluştur
-    const button = document.createElement('button');
-    button.textContent = 'Videoyu Hızlandır'; // Buton metni
-    button.style.position = 'fixed';
-    button.style.top = '10px';
-    button.style.right = '10px';
-    button.style.zIndex = '1000';
-    button.style.padding = '10px 20px';
-    button.style.backgroundColor = '#4CAF50'; // Yeşil arka plan
-    button.style.color = 'white'; // Beyaz metin
-    button.style.border = 'none';
-    button.style.borderRadius = '5px';
-    button.style.cursor = 'pointer';
-    button.style.fontSize = '16px';
-    document.body.appendChild(button);
+    // X tuşuna basıldığında video hızlandırılır
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'x' || event.key === 'X') { // X tuşuna basıldı mı?
+            // Videoları her 3 saniyede bir kontrol et
+            setInterval(function() {
+                let videos = document.querySelectorAll('video');
+                videos.forEach(function(video) {
+                    if (video.readyState >= 2) { // Video yüklendiyse
+                        video.playbackRate = speedIncrease; // Hızı artır
 
-    // Butona tıklandığında video hızlandırılır
-    button.addEventListener('click', function() {
-        // Videoları her 3 saniyede bir kontrol et
-        setInterval(function() {
-            let videos = document.querySelectorAll('video');
-            videos.forEach(function(video) {
-                if (video.readyState >= 2) { // Video yüklendiyse
-                    video.playbackRate = speedIncrease; // Hızı artır
+                        // Hızlandırmayı gizlemek için görsel ve zamanlama ayarları
+                        video.onplay = function() {
+                            setTimeout(() => {
+                                video.currentTime += 0.1; // Videoyu her 0.1 saniyede bir ilerlet
+                            }, 100); // 100 ms aralıklarla ilerlet
+                        };
 
-                    // Hızlandırmayı gizlemek için görsel ve zamanlama ayarları
-                    video.onplay = function() {
-                        setTimeout(() => {
-                            video.currentTime += 0.1; // Videoyu her 0.1 saniyede bir ilerlet
-                        }, 100); // 100 ms aralıklarla ilerlet
-                    };
+                        // Video bitince işaretle
+                        video.onended = function() {
+                            console.log("Video tamamlandı."); // Konsolda video tamamlandığını yazdır
+                        };
 
-                    // Video bitince işaretle
-                    video.onended = function() {
-                        console.log("Video tamamlandı."); // Konsolda video tamamlandığını yazdır
-                        // Buraya bitiş işaretleme işlemini ekleyebilirsiniz
-                    };
-
-                    // Videoyu oynat
-                    video.play().catch(function(error) {
-                        console.error("Video oynatmada hata:", error); // Hata loglama
-                    });
-                }
-            });
-        }, 3000); // Her 3 saniyede bir videoları kontrol et
+                        // Videoyu oynat
+                        video.play().catch(function(error) {
+                            console.error("Video oynatmada hata:", error); // Hata loglama
+                        });
+                    }
+                });
+            }, 3000); // Her 3 saniyede bir videoları kontrol et
+        }
     });
 })();
-
-
-
-
 
 
 
