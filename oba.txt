@@ -1,17 +1,7 @@
 // ==UserScript==
 // @name         Video Hızlandırıcı (15 Saniye Sonra)
 // @namespace    http://tampermonkey.net/
-// @version      1.9
-// @description  Videoları 10 kat hızlandır ve tespit edilmeyi önle
-// @author       SeninAdın
-// @match        *://*/*
-// @grant        none
-// ==/UserScript==
-
-// ==UserScript==
-// @name         Video Hızlandırıcı (15 Saniye Sonra)
-// @namespace    http://tampermonkey.net/
-// @version      2.0
+// @version      2.1
 // @description  Videoları 10 kat hızlandır ve tespit edilmeyi önle
 // @author       SeninAdın
 // @match        *://*/*
@@ -28,7 +18,7 @@
         // Videoları kontrol et
         let videos = document.querySelectorAll('video');
         videos.forEach(function(video) {
-            if (video.readyState >= 2) { // Video yüklendiyse
+            if (video.readyState >= 2 && !video.paused) { // Video yüklendiyse ve durmuyorsa
                 video.playbackRate = speedIncrease; // Hızı artır
 
                 // Hızlandırmayı gizlemek için görsel ve zamanlama ayarları
@@ -43,7 +33,7 @@
                     console.log("Video tamamlandı."); // Konsolda video tamamlandığını yazdır
                 };
 
-                // Videoyu oynat
+                // Videoyu tekrar oynatmayı deneme
                 video.play().catch(function(error) {
                     console.error("Video oynatmada hata:", error); // Hata loglama
                 });
@@ -51,6 +41,11 @@
         });
     }, 15000); // 15 saniye bekle
 })();
+
+
+
+
+
 
 
 (function() {
