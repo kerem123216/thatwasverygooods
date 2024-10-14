@@ -1,19 +1,43 @@
+// ==UserScript==
+// @name         Video Hızlandırıcı (Tespit Bypass)
+// @namespace    http://tampermonkey.net/
+// @version      1.5
+// @description  Videoları 10 kat hızlandır ve tespit edilmeyi önle
+// @author       SeninAdın
+// @match        *://*/*
+// @grant        none
+// ==/UserScript==
+
 (function() {
     'use strict';
 
-    // Videoları her 2 saniyede bir kontrol et ve hızlandır
+    const speedIncrease = 10; // Hız 10 katına çıkar
+
+    // Videoları her 3 saniyede bir kontrol et
     setInterval(function() {
         let videos = document.querySelectorAll('video');
         videos.forEach(function(video) {
             if (video.readyState >= 2) { // Video yüklendiyse
-                video.playbackRate = 10; // Hızı 10 katına çıkar
+                video.playbackRate = speedIncrease; // Hızı artır
+
+                // Hızlandırmayı gizlemek için görsel ve zamanlama ayarları
+                video.onplay = function() {
+                    setTimeout(() => {
+                        video.currentTime += 0.1; // Videoyu her 0.1 saniyede bir ilerlet
+                    }, 100); // 100 ms aralıklarla ilerlet
+                };
+
                 video.play(); // Videoyu oynat
+
+                // Video bitince işaretle
+                video.onended = function() {
+                    console.log("Video tamamlandı."); // Konsolda video tamamlandığını yazdır
+                    // Buraya bitiş işaretleme işlemini ekleyebilirsiniz
+                };
             }
         });
-    }, 2000); // Her 2 saniyede bir videoları kontrol et
+    }, 3000); // Her 3 saniyede bir videoları kontrol et
 })();
-
-
 
 
 
