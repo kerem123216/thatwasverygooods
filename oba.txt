@@ -28,35 +28,6 @@
 
 
 
-(function() {
-    'use strict';
-
-    // visibilitychange olayını devre dışı bırak
-    document.addEventListener('visibilitychange', function(event) {
-        event.stopImmediatePropagation();
-    }, true);
-
-    // blur olayını devre dışı bırak
-    window.addEventListener('blur', function(event) {
-        event.stopImmediatePropagation();
-    }, true);
-
-    // focus olayını devre dışı bırak
-    window.addEventListener('focus', function(event) {
-        event.stopImmediatePropagation();
-    }, true);
-
-    // SetInterval ile videoları sürekli oynatmaya çalış
-    setInterval(function() {
-        let videos = document.querySelectorAll('video');
-        videos.forEach(function(video) {
-            if (video.paused) {
-                video.play();
-            }
-        });
-    }, 1000); // Her 1 saniyede bir videoları kontrol et
-})();
-
 
 
 (function() {
