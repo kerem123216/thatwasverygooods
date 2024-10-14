@@ -5,6 +5,15 @@
 
     // Video elementi seçimi
     const video = document.querySelector('video');
+    const playButtonSelector = '.vjs-big-play-button';
+
+    // Oynatma butonuna tıklama fonksiyonu
+    const clickPlayButton = () => {
+        const playButton = document.querySelector(playButtonSelector);
+        if (playButton && !playButton.disabled) {
+            playButton.click(); // Oynatma butonuna bas
+        }
+    };
 
     // Videonun bitip bitmediğini kontrol eden fonksiyon
     const checkVideoEnded = () => {
@@ -20,17 +29,21 @@
 
             // Yeni sayfaya git
             window.location.href = newUrl;
-
-            // Oyun başlatma fonksiyonunu yeni sayfada çağır
-            setTimeout(() => {
-                const playButton = document.querySelector('button.play'); // Oynatma butonunu seç
-                if (playButton) {
-                    playButton.click(); // Oynatma butonuna bas
-                }
-            }, 1000); // Sayfa yüklendikten sonra 1 saniye bekle
         }
     };
 
-    // Videonun bitip bitmediğini her 5 saniyede bir kontrol et
-    setInterval(checkVideoEnded, 5000);
+    // Sayfa yüklendiğinde ve her 5 saniyede bir kontrol et
+    const init = () => {
+        // Oynatma butonuna tıkla
+        clickPlayButton();
+
+        // Videonun bitip bitmediğini kontrol et
+        setInterval(() => {
+            checkVideoEnded();
+            clickPlayButton(); // Her kontrol sonrası butona bas
+        }, 5000);
+    };
+
+    // DOMContentLoaded olayı ile scripti başlat
+    window.addEventListener('DOMContentLoaded', init);
 })();
