@@ -1,47 +1,36 @@
-// ==UserScript==
-// @name         Video Hızlandırıcı (15 Saniye Sonra)
-// @namespace    http://tampermonkey.net/
-// @version      2.2
-// @description  Videoları 10 kat hızlandır ve tespit edilmeyi önle
-// @author       SeninAdın
-// @match        *://*/*
-// @grant        none
-// ==/UserScript==
+
 
 (function() {
     'use strict';
 
-    const speedIncrease = 10; // Hız 10 katına çıkar
+    // Video elementi seçimi
+    const video = document.querySelector('video');
 
-    // Sayfa yüklendikten 15 saniye sonra hızlandırmayı başlat
-    setTimeout(function() {
-        // Videoları kontrol et
-        let videos = document.querySelectorAll('video');
-        videos.forEach(function(video) {
-            if (video.readyState >= 2) { // Video yüklendiyse
-                video.playbackRate = speedIncrease; // Hızı artır
+    // Videonun bitip bitmediğini kontrol eden fonksiyon
+    const checkVideoEnded = () => {
+        if (video && video.ended) {
+            // Mevcut URL'yi al
+            const currentUrl = window.location.href;
+            const urlParts = currentUrl.split('/');
+            const lastPart = urlParts[urlParts.length - 1];
+            const nextNumber = parseInt(lastPart) + 1; // Son sayıyı artır
 
-                // Hızlandırmayı gizlemek için görsel ve zamanlama ayarları
-                video.onplay = function() {
-                    setInterval(() => {
-                        if (!video.paused) { // Video durmamışsa
-                            video.currentTime += 0.1; // Videoyu her 0.1 saniyede bir ilerlet
-                        }
-                    }, 100); // 100 ms aralıklarla ilerlet
-                };
+            // Yeni URL'yi oluştur
+            const newUrl = currentUrl.replace(lastPart, nextNumber);
 
-                // Video bitince işlemler
-                video.onended = function() {
-                    console.log("Video tamamlandı."); // Konsolda video tamamlandığını yazdır
-                    video.playbackRate = 1; // Hızı normalleştir
-                    // İstenirse başka bir işlem yapılabilir (örneğin, sonraki videoya geçişi tetikleme)
-                };
+            // Yeni sayfaya git
+            window.location.href = newUrl;
 
-                // Videoyu tekrar oynatmayı deneme
-                video.play().catch(function(error) {
-                    console.error("Video oynatmada hata:", error); // Hata loglama
-                });
-            }
-        });
-    }, 15000); // 15 saniye bekle
+            // Oyun başlatma fonksiyonunu yeni sayfada çağır
+            setTimeout(() => {
+                const playButton = document.querySelector('button.play'); // Oynatma butonunu seç
+                if (playButton) {
+                    playButton.click(); // Oynatma butonuna bas
+                }
+            }, 1000); // Sayfa yüklendikten sonra 1 saniye bekle
+        }
+    };
+
+    // Videonun bitip bitmediğini her 5 saniyede bir kontrol et
+    setInterval(checkVideoEnded, 5000);
 })();
