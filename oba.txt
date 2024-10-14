@@ -1,9 +1,7 @@
-
-
 // ==UserScript==
-// @name         Video Hızlandırıcı (X Tuşu ile)
+// @name         Video Hızlandırıcı (15 Saniye Sonra)
 // @namespace    http://tampermonkey.net/
-// @version      1.8
+// @version      1.9
 // @description  Videoları 10 kat hızlandır ve tespit edilmeyi önle
 // @author       SeninAdın
 // @match        *://*/*
@@ -15,39 +13,36 @@
 
     const speedIncrease = 10; // Hız 10 katına çıkar
 
-    // X tuşuna basıldığında video hızlandırılır
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'x' || event.key === 'X') { // X tuşuna basıldı mı?
-            // Videoları her 3 saniyede bir kontrol et
-            setInterval(function() {
-                let videos = document.querySelectorAll('video');
-                videos.forEach(function(video) {
-                    if (video.readyState >= 2) { // Video yüklendiyse
-                        video.playbackRate = speedIncrease; // Hızı artır
+    // Sayfa yüklendikten 15 saniye sonra hızlandırmayı başlat
+    setTimeout(function() {
+        // Videoları her 3 saniyede bir kontrol et
+        setInterval(function() {
+            let videos = document.querySelectorAll('video');
+            videos.forEach(function(video) {
+                if (video.readyState >= 2) { // Video yüklendiyse
+                    video.playbackRate = speedIncrease; // Hızı artır
 
-                        // Hızlandırmayı gizlemek için görsel ve zamanlama ayarları
-                        video.onplay = function() {
-                            setTimeout(() => {
-                                video.currentTime += 0.1; // Videoyu her 0.1 saniyede bir ilerlet
-                            }, 100); // 100 ms aralıklarla ilerlet
-                        };
+                    // Hızlandırmayı gizlemek için görsel ve zamanlama ayarları
+                    video.onplay = function() {
+                        setTimeout(() => {
+                            video.currentTime += 0.1; // Videoyu her 0.1 saniyede bir ilerlet
+                        }, 100); // 100 ms aralıklarla ilerlet
+                    };
 
-                        // Video bitince işaretle
-                        video.onended = function() {
-                            console.log("Video tamamlandı."); // Konsolda video tamamlandığını yazdır
-                        };
+                    // Video bitince işaretle
+                    video.onended = function() {
+                        console.log("Video tamamlandı."); // Konsolda video tamamlandığını yazdır
+                    };
 
-                        // Videoyu oynat
-                        video.play().catch(function(error) {
-                            console.error("Video oynatmada hata:", error); // Hata loglama
-                        });
-                    }
-                });
-            }, 3000); // Her 3 saniyede bir videoları kontrol et
-        }
-    });
+                    // Videoyu oynat
+                    video.play().catch(function(error) {
+                        console.error("Video oynatmada hata:", error); // Hata loglama
+                    });
+                }
+            });
+        }, 3000); // Her 3 saniyede bir videoları kontrol et
+    }, 15000); // 15 saniye bekle
 })();
-
 
 
 
